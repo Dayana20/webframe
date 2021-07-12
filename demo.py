@@ -26,11 +26,7 @@ def home():
 @app.route("/about")                          # this tells you the URL the method below is related to
 def about():
     return render_template('about.html', subtitle='About Page')
-  
-# @app.route("/register")                          # this tells you the URL the method below is related to
-# def register():
-#     # form = RegistrationForm()
-#     return render_template('register.html', subtitle='Register Form')
+
   
 @app.route("/register", methods=['GET', 'POST'])
 def register():
