@@ -20,9 +20,7 @@ class User(db.Model):
   def __repr__(self):
     return f"User('{self.username}', '{self.email}')"
 
-# @app.route("/")                          # this tells you the URL the method below is related to
-# def hello_world():
-#     return "<p>Hello, World!</p>"        # this prints HTML to the webpage
+
 @app.route("/")                          # this tells you the URL the method below is related to
 def home():
     return render_template('home.html', subtitle='Home Page')
