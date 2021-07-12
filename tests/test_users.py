@@ -39,8 +39,8 @@ class UsersTests(unittest.TestCase):
         response = self.register('test2', 'test@example', 'FlaskIsAwesome')
         self.assertIn(b'Invalid email address.', response.data)
         
-        response = self.register('', 'test@', '@')
-        self.assertIn(b'Invalid email address.', response.data)
+        response2 = self.register('', 'test@', '@')
+        self.assertIn(b'Invalid email address.', response2.data)
 
 
 if __name__ == "__main__":
