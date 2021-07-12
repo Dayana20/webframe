@@ -1,9 +1,6 @@
 from flask import Flask, render_template, url_for, flash, redirect
 from forms import RegistrationForm
 from flask_sqlalchemy import SQLAlchemy
-# from flask_wtf import FlaskForm
-# from wtforms import StringField, PasswordField, SubmitField, BooleanField
-# from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 
 app = Flask(__name__)                    # this gets the name of the file so Flask knows it's name
