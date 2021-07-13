@@ -48,7 +48,7 @@ def register():
 
 @app.route("/captions")
 def captions():
-    TITLE = "The Danger Of Silence"
+    TITLE = "English Numbers"
     return render_template('captions.html', songName=TITLE, file=FILE_NAME)  
 
 @app.before_first_request

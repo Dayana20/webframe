@@ -17,12 +17,10 @@ def printWAV(FILE_NAME, pos, clip):
             text += "Could not request results; {0}".format(e)+ "\n"
     return text
   
-def main():
-  FILE_NAME = "english.wav"
-  time = 0 # position in track
-  dur = 10 # clip length to process each iteration
-  text = printWAV(FILE_NAME, time, dur)
-  print(text)
+# def main():
+#   FILE_NAME = "english.wav"
+#   time = 0 # position in track
+#   dur = 10 # clip length to process each iteration
+#   text = printWAV(FILE_NAME, time, dur)
+#   print(text)
   
-
-main()
