@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from converter import printWAV # get speech recognition function
 import time, random, threading
 from turbo_flask import Turbo # pip3 install turbo-flask
+from flask_bcrypt import Bcrypt #for password (pip install flask-bcrypt)
 
 
 app = Flask(__name__)                    # this gets the name of the file so Flask knows it's name
@@ -13,6 +14,7 @@ db = SQLAlchemy(app)
 interval=10
 FILE_NAME = "english.wav"
 turbo = Turbo(app)
+bcrypt = Bcrypt(app) # for password
 
 class User(db.Model):
   id = db.Column(db.Integer, primary_key=True)
@@ -38,7 +40,9 @@ def about():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit(): # checks if entries are valid
-        user = User(username=form.username.data, email=form.email.data, password=form.password.data)
+        password=form.password.data
+        pw_hash = bcrypt.generate_password_hash(password)
+        user = User(username=form.username.data, email=form.email.data, password=pw_hash)
         db.session.add(user)
         db.session.commit()
         flash(f'Account created for {form.username.data}!', 'success')
