@@ -39,6 +39,12 @@ def register():
         return redirect(url_for('home')) # if so - send to home page
     return render_template('register.html', title='Register', form=form)
   
+@app.route("/captions")
+def captions():
+    TITLE = "The Danger Of Silence"
+    FILE_NAME = "The danger of silence _ Clint Smith.wav"
+    return render_template('captions.html', songName=TITLE, file=FILE_NAME)
+
 ''' To View Users: run python3
 >>> from app_py_file_name import db
 >>> from app_py_file_name import User
