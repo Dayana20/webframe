@@ -46,7 +46,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash(f'Account created for {form.username.data}!', 'success')
-        # return redirect(url_for('home')) # if so - send to home page
+        return redirect(url_for('home')) # if so - send to home page
     return render_template('register.html', title='Register', form=form)
 
 
@@ -63,7 +63,8 @@ def before_first_request():
     file.close()
 
     #starting thread that will time updates
-    threading.Thread(target=update_captions).start()
+    # threading.Thread(target=update_captions).start()
+    threading.Thread(target=update_captions, daemon=True).start()
 
 @app.context_processor
 def inject_load():
