@@ -17,13 +17,13 @@ turbo = Turbo(app)
 bcrypt = Bcrypt(app) # for password
 
 class User(db.Model):
-  id = db.Column(db.Integer, primary_key=True)
-  username = db.Column(db.String(20), unique=True, nullable=False)
-  email = db.Column(db.String(120), unique=True, nullable=False)
-  password = db.Column(db.String(60), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(60), nullable=False)
 
-  def __repr__(self):
-    return f"User('{self.username}', '{self.email}')"
+    def __repr__(self):
+        return f"User('{self.username}', '{self.email}')"
 
 
 @app.route("/")                          # this tells you the URL the method below is related to
@@ -52,8 +52,11 @@ def register():
 
 @app.route("/captions")
 def captions():
-    TITLE = "English Numbers"
-    return render_template('captions.html', songName=TITLE, file=FILE_NAME)  
+    try:
+        TITLE = "English Numbers"
+        return render_template('captions.html', songName=TITLE, file=FILE_NAME) 
+    except Exeception:
+        print("cannot open "+FILE_NAME)
 
 @app.before_first_request
 def before_first_request():
@@ -68,18 +71,21 @@ def before_first_request():
 
 @app.context_processor
 def inject_load():
-    # getting previous time stamp
-    file = open("pos.txt","r")
-    pos = int(file.read())
-    file.close()
+    try:
+        # getting previous time stamp
+        file = open("pos.txt","r")
+        pos = int(file.read())
+        file.close()
 
-    # writing next time stamp
-    file = open("pos.txt","w")
-    file.write(str(pos+interval))
-    file.close()
+        # writing next time stamp
+        file = open("pos.txt","w")
+        file.write(str(pos+interval))
+        file.close()
 
-    #returning captions
-    return {'caption':printWAV(FILE_NAME, pos=pos, clip=interval)}
+        #returning captions
+        return {'caption':printWAV(FILE_NAME, pos=pos, clip=interval)}
+    except Exeception:
+        print("cannot open "+FILE_NAME))
 
 def update_captions():
     with app.app_context():
