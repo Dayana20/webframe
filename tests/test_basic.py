@@ -23,7 +23,7 @@ class BasicTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         
     def test_sign_in(self):
-        response = self.app.get('/second_page', follow_redirects=True)
+        response = self.app.get('/sign_in', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         
     def test_register(self):
