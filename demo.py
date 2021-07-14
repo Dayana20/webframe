@@ -85,7 +85,7 @@ def inject_load():
         #returning captions
         return {'caption':printWAV(FILE_NAME, pos=pos, clip=interval)}
     except Exeception:
-        print("cannot open "+FILE_NAME))
+        print("cannot open "+FILE_NAME)
 
 def update_captions():
     with app.app_context():
