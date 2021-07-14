@@ -1,27 +1,27 @@
 import sys
 try:
-  from flask import Flask, render_template, url_for, flash, redirect
-  from forms import RegistrationForm, SignInForm
-  from flask_sqlalchemy import SQLAlchemy
-  from converter import printWAV # get speech recognition function
-  import time, random, threading
-  from turbo_flask import Turbo # pip3 install turbo-flask
-  from flask_bcrypt import Bcrypt #for password (pip install flask-bcrypt)
+    from flask import Flask, render_template, url_for, flash, redirect, request
+    from forms import RegistrationForm, SignInForm
+    from flask_sqlalchemy import SQLAlchemy
+    from converter import printWAV # get speech recognition function
+    import time, random, threading
+    from turbo_flask import Turbo # pip3 install turbo-flask
+    from flask_bcrypt import Bcrypt #for password (pip install flask-bcrypt)
 except ImportError as e:
-  print("Error: " + str(e))
+    print("Error: " + str(e))
 
 try:
-  app = Flask(__name__)                    # this gets the name of the file so Flask knows it's name
-  app.config['SECRET_KEY'] = '67414c2f94271f30852f5623dbeb57b3'
-  app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-  db = SQLAlchemy(app)
-  interval=10
-  FILE_NAME = "english.wav"
-  turbo = Turbo(app)
-  bcrypt = Bcrypt(app) # for password
+    app = Flask(__name__)                    # this gets the name of the file so Flask knows it's name
+    app.config['SECRET_KEY'] = '67414c2f94271f30852f5623dbeb57b3'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+    db = SQLAlchemy(app)
+    interval=10
+    FILE_NAME = "english.wav"
+    turbo = Turbo(app)
+    bcrypt = Bcrypt(app) # for password
 except Exception as e:
-  print("Fix your errors: " +str(e))
-  sys.exit()
+    print("Fix your errors: " +str(e))
+    sys.exit()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -110,27 +110,23 @@ To View Users: run python3
 >>> from app_py_file_name import User
 >>> User.query.all()
 '''
-  
-# @app.route("/sign_in")
-# def sign_in():
-#     return render_template('sign_in.html', subtitle='Sign In', text='Log In Here')
-  
+
+
 @app.route("/sign_in", methods=['GET', 'POST'])
 def sign_in():
     form_SI = SignInForm()
-    # Get Fields Username & Password
-    username = form_SI.username.data
-    usr_entered = form_SI.password.data
-      
-    
-#     if form.validate_on_submit(): # checks if entries are valid
-#         password=form.password.data
-#         pw_hash = bcrypt.generate_password_hash(password)
-#         user = User(username=form.username.data, email=form.email.data, password=pw_hash)
-#         db.session.add(user)
-#         db.session.commit()
-#         flash(f'Account created for {form.username.data}!', 'success')
-#         return redirect(url_for('home')) # if so - send to home page
+    if form_SI.validate_on_submit():
+        username = form_SI.username.data
+        password = form_SI.password.data
+        user = User.query.filter_by(username=username).first()
+        if user is None:
+            flash('Account Login Failed')
+        else:
+            if(user.password==password):
+                flash(f'Account Login Success for {username}')
+                return redirect(url_for('home'))
+            else:
+                flash(f'Wrong Password for {username}')
     return render_template('sign_in.html', title='Log In', form=form_SI)
 
   
