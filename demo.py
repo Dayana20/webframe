@@ -7,11 +7,13 @@ try:
     import time, random, threading
     from turbo_flask import Turbo # pip3 install turbo-flask
     from flask_bcrypt import Bcrypt #for password (pip install flask-bcrypt)
+    from flask_behind_proxy import FlaskBehindProxy # pip install flask-behind-proxy
 except ImportError as e:
     print("Error: " + str(e))
 
 try:
-    app = Flask(__name__)                    # this gets the name of the file so Flask knows it's name
+    app = Flask(__name__)# this gets the name of the file so Flask knows it's name
+    proxied = FlaskBehindProxy(app) # helps with reload
     app.config['SECRET_KEY'] = '67414c2f94271f30852f5623dbeb57b3'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
     db = SQLAlchemy(app)
@@ -110,24 +112,47 @@ To View Users: run python3
 >>> from app_py_file_name import User
 >>> User.query.all()
 '''
-
-
-@app.route("/sign_in", methods=['GET', 'POST'])
+# Route for handling the login page logic
+@app.route('/sign_in')
 def sign_in():
-    form_SI = SignInForm()
-    if form_SI.validate_on_submit():
-        username = form_SI.username.data
-        password = form_SI.password.data
-        user = User.query.filter_by(username=username).first()
-        if user is None:
-            flash('Account Login Failed')
-        else:
-            if(user.password==password):
-                flash(f'Account Login Success for {username}')
-                return redirect(url_for('home'))
-            else:
-                flash(f'Wrong Password for {username}')
-    return render_template('sign_in.html', title='Log In', form=form_SI)
+    return render_template('sign_in.html')
+    
+@app.route('/sign_in', methods=['POST'])
+def sign_in_post():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    remember = True if request.form.get('remember') else False
+
+    user = User.query.filter_by(username=username).first()
+
+    # check if the user actually exists
+    # take the user-supplied password, hash it, and compare it to the hashed password in the database
+    if (user is None or (user.password!=password)):
+        flash(f'Please check your login details and try again. {password} and {user.password}')
+        return redirect(url_for('sign_in')) # if the user doesn't exist or password is wrong, reload the page
+    else:
+        # if the above check passes, then we know the user has the right credentials
+        flash(f'Account Login Success for {username}')
+        return redirect(url_for('home'))
+
+# @app.route("/sign_in", methods=['GET', 'POST'])
+# def sign_in():
+#     form_SI = SignInForm()
+# #     if form_SI.validate_on_submit():
+# #         username = form_SI.username.data
+# #         password = form_SI.password.data
+# #         user = User.query.filter_by(username=username).first()
+#     if(request.method == 'POST'): 
+#         flash('Trying to log in')
+# #             if user is None:
+# #                 flash('Account Login Failed')
+# #             else:
+# #                 if(user.password==password):
+# #                     flash(f'Account Login Success for {username}')
+# #                     return redirect(url_for('home'))
+# #                 else:
+# #                     flash(f'Wrong Password for {username}')
+#     return render_template('sign_in.html', title='Log In', form=form_SI)
 
   
 # put to byass manual environment variable setting

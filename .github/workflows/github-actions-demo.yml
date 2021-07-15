@@ -23,6 +23,7 @@ jobs:
           pip3 install turbo-flask
           pip install flask-bcrypt
           pip install coverage
+          pip install flask-behind-proxy
 
 
       - name: Test webpages
