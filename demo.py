@@ -127,13 +127,19 @@ def sign_in_post():
 
     # check if the user actually exists
     # take the user-supplied password, hash it, and compare it to the hashed password in the database
-    if (user is None or (user.password!=password)):
-        flash(f'Please check your login details and try again. {password} and {user.password}')
+    if (user is None):
+        flash('Please check your login details and try again')
         return redirect(url_for('sign_in')) # if the user doesn't exist or password is wrong, reload the page
     else:
-        # if the above check passes, then we know the user has the right credentials
-        flash(f'Account Login Success for {username}')
-        return redirect(url_for('home'))
+        authenticated_user = bcrypt.check_password_hash(user.password, password)
+        if authenticated_user:
+            # if the above check passes, then we know the user has the right credentials
+            flash(f'Account Login Success for {username}')
+            return redirect(url_for('home'))
+        else:
+            flash('Please check your login details and try again')
+            return redirect(url_for('sign_in'))
+
 
 
 #   this should always be at the end
