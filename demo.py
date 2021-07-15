@@ -135,26 +135,7 @@ def sign_in_post():
         flash(f'Account Login Success for {username}')
         return redirect(url_for('home'))
 
-# @app.route("/sign_in", methods=['GET', 'POST'])
-# def sign_in():
-#     form_SI = SignInForm()
-# #     if form_SI.validate_on_submit():
-# #         username = form_SI.username.data
-# #         password = form_SI.password.data
-# #         user = User.query.filter_by(username=username).first()
-#     if(request.method == 'POST'): 
-#         flash('Trying to log in')
-# #             if user is None:
-# #                 flash('Account Login Failed')
-# #             else:
-# #                 if(user.password==password):
-# #                     flash(f'Account Login Success for {username}')
-# #                     return redirect(url_for('home'))
-# #                 else:
-# #                     flash(f'Wrong Password for {username}')
-#     return render_template('sign_in.html', title='Log In', form=form_SI)
 
-  
-# put to byass manual environment variable setting
-if __name__ == '__main__':               # this should always be at the end
+#   this should always be at the end
+if __name__ == '__main__':
     app.run(host="0.0.0.0")
