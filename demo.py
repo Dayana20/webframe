@@ -1,7 +1,7 @@
 import sys
 try:
     from flask import Flask, render_template, url_for, flash, redirect, request
-    from forms import RegistrationForm, SignInForm
+    from forms import RegistrationForm
     from flask_sqlalchemy import SQLAlchemy
     from converter import printWAV # get speech recognition function
     import time, random, threading
@@ -18,7 +18,7 @@ try:
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
     db = SQLAlchemy(app)
     interval=10
-    FILE_NAME = "english.wav"
+    FILE_NAME = "just_keep_swimming.wav"
     turbo = Turbo(app)
     bcrypt = Bcrypt(app) # for password
 except Exception as e:
@@ -55,8 +55,9 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash(f'Account created for {form.username.data}!', 'success')
-        return redirect(url_for('register')) # if so - send to home page
+        return redirect(url_for('home')) # if so - send to home page
     return render_template('register.html', title='Register', form=form)
+
 
 
 @app.route("/captions")
@@ -64,7 +65,7 @@ def captions():
     try:
         TITLE = "English Numbers"
         return render_template('captions.html', songName=TITLE, file=FILE_NAME) 
-    except Exeception:
+    except:
         print("cannot open "+FILE_NAME)
 
 @app.before_first_request
@@ -73,10 +74,12 @@ def before_first_request():
     file = open("pos.txt","w") 
     file.write(str(0))
     file.close()
+    
 
     #starting thread that will time updates
     # threading.Thread(target=update_captions).start()
     threading.Thread(target=update_captions, daemon=True).start()
+
 
 @app.context_processor
 def inject_load():
@@ -93,7 +96,7 @@ def inject_load():
 
         #returning captions
         return {'caption':printWAV(FILE_NAME, pos=pos, clip=interval)}
-    except Exeception:
+    except:
         print("cannot open "+FILE_NAME)
 
 def update_captions():

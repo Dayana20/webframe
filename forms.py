@@ -9,12 +9,12 @@ class RegistrationForm(FlaskForm):
                         validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password',
-                                     validators=[DataRequired(), EqualTo('password')])
+                                     validators=[DataRequired(), EqualTo('password', message="Passwords don't match")])
     submit = SubmitField('Sign Up')
     
     
-class SignInForm(FlaskForm):
-    username = StringField('Username',
-                           validators=[DataRequired(), Length(min=2, max=20)])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Log In')
+# class SignInForm(FlaskForm):
+#     username = StringField('Username',
+#                            validators=[DataRequired(), Length(min=2, max=20)])
+#     password = PasswordField('Password', validators=[DataRequired()])
+#     submit = SubmitField('Log In')
