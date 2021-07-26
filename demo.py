@@ -51,12 +51,12 @@ def home():
 def about():
     return render_template('about.html', subtitle='About Page')
 
- 
+
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():  # checks if entries are valid
-        password=form.password.data
+        password = form.password.data
         pw_hash = bcrypt.generate_password_hash(password)
         user = User(username=form.username.data, email=form.email.data,
                     password=pw_hash)
@@ -72,7 +72,7 @@ def register():
 def captions():
     try:
         TITLE = "English Numbers"
-        return render_template('captions.html', songName=TITLE, file=FILE_NAME) 
+        return render_template('captions.html', songName=TITLE, file=FILE_NAME)
     except FileNotFoundError:
         print("cannot open "+FILE_NAME)
 
@@ -102,9 +102,10 @@ def inject_load():
         file.close()
 
         # returning captions
-        return {'caption':printWAV(FILE_NAME, pos=pos, clip=interval)}
+        return {'caption': printWAV(FILE_NAME, pos=pos, clip=interval)}
     except FileNotFoundError:
-        print("cannot open "+FILE_NAME)
+        print("cannot open " + FILE_NAME)
+
 
 def update_captions():
     with app.app_context():
@@ -113,7 +114,8 @@ def update_captions():
             time.sleep(interval)
 
             # forcefully updating captionsPane with caption
-            turbo.push(turbo.replace(render_template('captionsPane.html'), 'load'))
+            turbo.push(turbo.replace(render_template('captionsPane.html'),
+                                     'load'))
 
 
 '''
