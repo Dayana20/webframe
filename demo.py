@@ -64,7 +64,7 @@ def register():
         db.session.commit()
         flash(f'Account created for {form.username.data}!', 'success')
         return redirect(url_for('home'))  # if so - send to home page
-    
+
     return render_template('register.html', title='Register', form=form)
 
 
@@ -80,7 +80,7 @@ def captions():
 @app.before_first_request
 def before_first_request():
     # resetting time stamp file to 0
-    file = open("pos.txt", "w") 
+    file = open("pos.txt", "w")
     file.write(str(0))
     file.close()
     # starting thread that will time updates
@@ -125,6 +125,7 @@ To View Users: run python3
 >>> User.query.all()
 '''
 
+
 # Route for handling the login page logic
 @app.route('/sign_in')
 def sign_in():
@@ -144,12 +145,13 @@ def sign_in_post():
     # compare it to the hashed password in the database
     if (user is None):
         flash('Please check your login details and try again')
-        return redirect(url_for('sign_in')) 
+        return redirect(url_for('sign_in'))
         # if the user doesn't exist or password is wrong, reload the page
     else:
-        authenticated_user = bcrypt.check_password_hash(user.password, password)
+        authenticated_user = bcrypt.check_password_hash(user.password,
+                                                        password)
         if authenticated_user:
-            # if the above check passes 
+            # if the above check passes
             # then we know the user has the right credentials
             flash(f'Account Login Success for {username}')
             return redirect(url_for('home'))
