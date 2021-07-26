@@ -1,5 +1,5 @@
 import sys
-try:
+try: # all necessary imports
     from flask import Flask, render_template, url_for, flash, redirect, request
     from forms import RegistrationForm
     from flask_sqlalchemy import SQLAlchemy
@@ -14,7 +14,7 @@ try:
 except ImportError as e:
     print("Error: " + str(e))
 
-try:
+try: # setting up flask app
     app = Flask(__name__)
     # this gets the name of the file so Flask knows it's name
     proxied = FlaskBehindProxy(app)  # helps with reload
@@ -30,7 +30,7 @@ except Exception as e:
     sys.exit()
 
 
-class User(db.Model):
+class User(db.Model): # object used to store user data
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -40,18 +40,19 @@ class User(db.Model):
         return f"User('{self.username}', '{self.email}', '{self.password}')"
 
 
-# this tells you the URL the method below is related to
+# home page
 @app.route("/")
 def home():
     return render_template('home.html', subtitle='Home Page')
 
 
-# this tells you the URL the method below is related to
+# about page
 @app.route("/about")
 def about():
     return render_template('about.html', subtitle='About Page')
 
 
+# registration page uses form and stores user object data
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -68,6 +69,7 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
+# sets up caption page
 @app.route("/captions")
 def captions():
     try:
@@ -77,6 +79,7 @@ def captions():
         print("cannot open "+FILE_NAME)
 
 
+# creates file that stores captions
 @app.before_first_request
 def before_first_request():
     # resetting time stamp file to 0
@@ -88,6 +91,7 @@ def before_first_request():
     threading.Thread(target=update_captions, daemon=True).start()
 
 
+# reads from file and writes starting/ending points
 @app.context_processor
 def inject_load():
     try:
@@ -119,6 +123,7 @@ def update_captions():
 
 
 '''
+Used to check the database from terminal
 To View Users: run python3
 >>> from app_py_file_name import db
 >>> from app_py_file_name import User
