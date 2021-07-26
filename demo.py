@@ -56,6 +56,7 @@ def register():
         db.session.commit()
         flash(f'Account created for {form.username.data}!', 'success')
         return redirect(url_for('home')) # if so - send to home page
+    
     return render_template('register.html', title='Register', form=form)
 
 
@@ -115,6 +116,7 @@ To View Users: run python3
 >>> from app_py_file_name import User
 >>> User.query.all()
 '''
+
 # Route for handling the login page logic
 @app.route('/sign_in')
 def sign_in():

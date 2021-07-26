@@ -25,7 +25,13 @@ jobs:
           pip install coverage
           pip install flask-behind-proxy
 
-
+      - name: Check Style
+        run: pycodestyle --first *.py
+        
+      - name: Test with pytest  # This is new!
+        run: |
+          python3 -m unittest test_basic.py
+        
       - name: Test webpages
         run: python3 tests/test_basic.py
         
