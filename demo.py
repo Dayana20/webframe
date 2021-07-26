@@ -9,7 +9,7 @@ try:
     import threading
     from turbo_flask import Turbo  # pip3 install turbo-flask
     from flask_bcrypt import Bcrypt  # for password (pip install flask-bcrypt)
-    from flask_behind_proxy import FlaskBehindProxy  
+    from flask_behind_proxy import FlaskBehindProxy
     # pip install flask-behind-proxy
 except ImportError as e:
     print("Error: " + str(e))
@@ -26,7 +26,7 @@ try:
     turbo = Turbo(app)
     bcrypt = Bcrypt(app)  # for password
 except Exception as e:
-    print("Fix your errors: " +str(e))
+    print("Fix your errors: " + str(e))
     sys.exit()
 
 
@@ -51,14 +51,15 @@ def home():
 def about():
     return render_template('about.html', subtitle='About Page')
 
-  
+ 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():  # checks if entries are valid
         password=form.password.data
         pw_hash = bcrypt.generate_password_hash(password)
-        user = User(username=form.username.data, email=form.email.data, password=pw_hash)
+        user = User(username=form.username.data, email=form.email.data,
+                    password=pw_hash)
         db.session.add(user)
         db.session.commit()
         flash(f'Account created for {form.username.data}!', 'success')
@@ -74,6 +75,7 @@ def captions():
         return render_template('captions.html', songName=TITLE, file=FILE_NAME) 
     except FileNotFoundError:
         print("cannot open "+FILE_NAME)
+
 
 @app.before_first_request
 def before_first_request():
@@ -95,8 +97,8 @@ def inject_load():
         file.close()
 
         # writing next time stamp
-        file = open("pos.txt","w")
-        file.write(str(pos+interval))
+        file = open("pos.txt", "w")
+        file.write(str(pos + interval))
         file.close()
 
         # returning captions
