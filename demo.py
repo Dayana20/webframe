@@ -3,11 +3,13 @@ try:
     from flask import Flask, render_template, url_for, flash, redirect, request
     from forms import RegistrationForm
     from flask_sqlalchemy import SQLAlchemy
-    from converter import printWAV # get speech recognition function
-    import time, random, threading
-    from turbo_flask import Turbo # pip3 install turbo-flask
-    from flask_bcrypt import Bcrypt #for password (pip install flask-bcrypt)
-    from flask_behind_proxy import FlaskBehindProxy # pip install flask-behind-proxy
+    from converter import printWAV  # get speech recognition function
+    import time
+    import random
+    import threading
+    from turbo_flask import Turbo  # pip3 install turbo-flask
+    from flask_bcrypt import Bcrypt  # for password (pip install flask-bcrypt)
+    from flask_behind_proxy import FlaskBehindProxy  # pip install flask-behind-proxy
 except ImportError as e:
     print("Error: " + str(e))
 
@@ -60,19 +62,18 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
-
 @app.route("/captions")
 def captions():
     try:
         TITLE = "English Numbers"
         return render_template('captions.html', songName=TITLE, file=FILE_NAME) 
-    except:
+    except FileNotFoundError:
         print("cannot open "+FILE_NAME)
 
 @app.before_first_request
 def before_first_request():
     #resetting time stamp file to 0
-    file = open("pos.txt","w") 
+    file = open("pos.txt", "w") 
     file.write(str(0))
     file.close()
     
@@ -145,7 +146,6 @@ def sign_in_post():
         else:
             flash('Please check your login details and try again')
             return redirect(url_for('sign_in'))
-
 
 
 #   this should always be at the end
