@@ -24,6 +24,7 @@ jobs:
           pip install flask-bcrypt
           pip install coverage
           pip install flask-behind-proxy
+          pip install --upgrade pip pycodestyle
 
       - name: Check Style
         run: pycodestyle --first *.py

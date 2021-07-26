@@ -11,7 +11,7 @@ class BasicTests(unittest.TestCase):
 
     ###############
     #### tests ####
-    ###############
+    ############### 
 
     def test_main_page(self):
         response = self.app.get('/', follow_redirects=True)
