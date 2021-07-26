@@ -15,10 +15,3 @@ class RegistrationForm(FlaskForm):
                                             'password',
                                             message="Passwords don't match")])
     submit = SubmitField('Sign Up')
-    
-    
-# class SignInForm(FlaskForm):
-#     username = StringField('Username',
-#                            validators=[DataRequired(), Length(min=2, max=20)])
-#     password = PasswordField('Password', validators=[DataRequired()])
-#     submit = SubmitField('Log In')
