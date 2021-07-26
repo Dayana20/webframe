@@ -1,5 +1,5 @@
 import sys
-try: # all necessary imports
+try:  # all necessary imports
     from flask import Flask, render_template, url_for, flash, redirect, request
     from forms import RegistrationForm
     from flask_sqlalchemy import SQLAlchemy
@@ -14,7 +14,7 @@ try: # all necessary imports
 except ImportError as e:
     print("Error: " + str(e))
 
-try: # setting up flask app
+try:  # setting up flask app
     app = Flask(__name__)
     # this gets the name of the file so Flask knows it's name
     proxied = FlaskBehindProxy(app)  # helps with reload
@@ -30,7 +30,7 @@ except Exception as e:
     sys.exit()
 
 
-class User(db.Model): # object used to store user data
+class User(db.Model):  # object used to store user data
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
