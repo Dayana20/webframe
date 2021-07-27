@@ -5,8 +5,8 @@ from forms import RegistrationForm
 from flask_sqlalchemy import SQLAlchemy
 # from converter import printWAV  # get speech recognition function
 import random
-import time
 import threading
+import time
 from turbo_flask import Turbo  # pip3 install turbo-flask
 from flask_bcrypt import Bcrypt  # for password (pip install flask-bcrypt)
 from flask_behind_proxy import FlaskBehindProxy
@@ -18,6 +18,7 @@ try:  # setting up flask app
     proxied = FlaskBehindProxy(app)  # helps with reload
     app.config['SECRET_KEY'] = '67414c2f94271f30852f5623dbeb57b3'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     db = SQLAlchemy(app)
     interval = 10
     FILE_NAME = "just_keep_swimming.wav"
