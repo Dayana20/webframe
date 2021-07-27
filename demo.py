@@ -1,18 +1,16 @@
 import sys
-try:  # all necessary imports
-    from flask import Flask, render_template, url_for, flash, redirect, request
-    from forms import RegistrationForm
-    from flask_sqlalchemy import SQLAlchemy
-    from converter import printWAV  # get speech recognition function
-    import random
-    import time
-    import threading
-    from turbo_flask import Turbo  # pip3 install turbo-flask
-    from flask_bcrypt import Bcrypt  # for password (pip install flask-bcrypt)
-    from flask_behind_proxy import FlaskBehindProxy
-    # pip install flask-behind-proxy
-except ImportError as e:
-    print("Error: " + str(e))
+# all necessary imports
+from flask import Flask, render_template, url_for, flash, redirect, request
+from forms import RegistrationForm
+from flask_sqlalchemy import SQLAlchemy
+from converter import printWAV  # get speech recognition function
+import random
+import time
+import threading
+from turbo_flask import Turbo  # pip3 install turbo-flask
+from flask_bcrypt import Bcrypt  # for password (pip install flask-bcrypt)
+from flask_behind_proxy import FlaskBehindProxy
+# pip install flask-behind-proxy
 
 try:  # setting up flask app
     app = Flask(__name__)
