@@ -3,7 +3,7 @@ import sys
 from flask import Flask, render_template, url_for, flash, redirect, request
 from forms import RegistrationForm
 from flask_sqlalchemy import SQLAlchemy
-from converter import printWAV  # get speech recognition function
+# from converter import printWAV  # get speech recognition function
 import random
 import time
 import threading
@@ -67,57 +67,57 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
-# sets up caption page
-@app.route("/captions")
-def captions():
-    try:
-        TITLE = "English Numbers"
-        return render_template('captions.html', songName=TITLE, file=FILE_NAME)
-    except FileNotFoundError:
-        print("cannot open "+FILE_NAME)
+# # sets up caption page
+# @app.route("/captions")
+# def captions():
+#     try:
+#         TITLE = "English Numbers"
+#         return render_template('captions.html', songName=TITLE, file=FILE_NAME)
+#     except FileNotFoundError:
+#         print("cannot open "+FILE_NAME)
 
 
-# creates file that stores captions
-@app.before_first_request
-def before_first_request():
-    # resetting time stamp file to 0
-    file = open("pos.txt", "w")
-    file.write(str(0))
-    file.close()
-    # starting thread that will time updates
-    # threading.Thread(target=update_captions).start()
-    threading.Thread(target=update_captions, daemon=True).start()
+# # creates file that stores captions
+# @app.before_first_request
+# def before_first_request():
+#     # resetting time stamp file to 0
+#     file = open("pos.txt", "w")
+#     file.write(str(0))
+#     file.close()
+#     # starting thread that will time updates
+#     # threading.Thread(target=update_captions).start()
+#     threading.Thread(target=update_captions, daemon=True).start()
 
 
-# reads from file and writes starting/ending points
-@app.context_processor
-def inject_load():
-    try:
-        # getting previous time stamp
-        file = open("pos.txt", "r")
-        pos = int(file.read())
-        file.close()
+# # reads from file and writes starting/ending points
+# @app.context_processor
+# def inject_load():
+#     try:
+#         # getting previous time stamp
+#         file = open("pos.txt", "r")
+#         pos = int(file.read())
+#         file.close()
 
-        # writing next time stamp
-        file = open("pos.txt", "w")
-        file.write(str(pos + interval))
-        file.close()
+#         # writing next time stamp
+#         file = open("pos.txt", "w")
+#         file.write(str(pos + interval))
+#         file.close()
 
-        # returning captions
-        return {'caption': printWAV(FILE_NAME, pos=pos, clip=interval)}
-    except FileNotFoundError:
-        print("cannot open " + FILE_NAME)
+#         # returning captions
+#         return {'caption': printWAV(FILE_NAME, pos=pos, clip=interval)}
+#     except FileNotFoundError:
+#         print("cannot open " + FILE_NAME)
 
 
-def update_captions():
-    with app.app_context():
-        while True:
-            # timing thread waiting for the interval
-            time.sleep(interval)
+# def update_captions():
+#     with app.app_context():
+#         while True:
+#             # timing thread waiting for the interval
+#             time.sleep(interval)
 
-            # forcefully updating captionsPane with caption
-            turbo.push(turbo.replace(render_template('captionsPane.html'),
-                                     'load'))
+#             # forcefully updating captionsPane with caption
+#             turbo.push(turbo.replace(render_template('captionsPane.html'),
+#                                      'load'))
 
 
 '''
