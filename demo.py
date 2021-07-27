@@ -4,8 +4,8 @@ try:  # all necessary imports
     from forms import RegistrationForm
     from flask_sqlalchemy import SQLAlchemy
     from converter import printWAV  # get speech recognition function
-    import time
     import random
+    import time
     import threading
     from turbo_flask import Turbo  # pip3 install turbo-flask
     from flask_bcrypt import Bcrypt  # for password (pip install flask-bcrypt)
